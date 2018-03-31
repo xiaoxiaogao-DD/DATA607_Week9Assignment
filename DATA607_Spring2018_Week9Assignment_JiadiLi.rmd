@@ -1,0 +1,37 @@
+#MSDS Spring 2018 
+##DATA 607 Data Aquisition and Management
+####Jiadi Li
+####Week 9 Assignment:Web APIs
+
+Choose one of the New York Times APIs, construct an interface in R to read in the JSON data, and transform it to an R dataframe.<br/><br/>
+
+New York Times web site provides a rich set of APIs:http://developer.nytimes.com/docs   
+
+####The Geographic API
+Base URL:   
+http://api.nytimes.com/svc/semantic/v2/geocodes  <br/>
+
+Scope:   
+The New York Times controlled vocabulary (over 2000 places used to classify New York Times articles metadata) and New York Times articles from 1981 to today (excludes wire services such as the Associated Press)  <br/>
+
+The general form for a Geographic API request by concept type and specific concept:  
+http://api.nytimes.com/svc/semantic/v2/geocodes/query.json?(query parameters)&api-key=your-API-key<br/>
+
+(1) install packages
+```{r}
+library(httr)
+library(jsonlite)
+library(RCurl)
+```
+
+(2) Load Data from NYT API
+```{r}
+API_key <- '562c28bceeaf4a43a251d7a6dddce779' #API key required to manipulate NYT API
+query_parameters <- 'country_code=US'
+
+API_geo_url <- paste0('http://api.nytimes.com/svc/semantic/v2/geocodes/query.json?',query_parameters,'&api-key=',API_key) #create URL for JSON file
+
+#put all information gathered before and generate a data frame
+geo.data <- flatten(fromJSON(API_geo_url)$result,recursive = TRUE)
+head(geo.data)
+```
